@@ -1,0 +1,5 @@
+{
+  "name": "Sasa Connect",
+  "description": "پنل مدیریت اتصال sing-box با REALITY برای Termux",
+  "requestFramePermissions": []
+}
