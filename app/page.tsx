@@ -1,8 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Power, Settings, Activity, Save, RefreshCw, Terminal } from 'lucide-react';
+import { Power, Settings, Activity, Save, RefreshCw, Terminal, Layers, PlaySquare, Stethoscope, History as HistoryIcon } from 'lucide-react';
 import { motion } from 'motion/react';
+import Subscriptions from '@/components/Subscriptions';
+import Tester from '@/components/Tester';
+import Diagnostics from '@/components/Diagnostics';
+import History from '@/components/History';
 
 const DECOY_SNIS = [
   'www.yahoo.com',
@@ -14,7 +18,7 @@ const DECOY_SNIS = [
 ];
 
 export default function SasaConnect() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'config' | 'logs'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'config' | 'logs' | 'subs' | 'tester' | 'diag' | 'history'>('dashboard');
   const [status, setStatus] = useState<'connected' | 'disconnected' | 'loading'>('loading');
   const [ping, setPing] = useState<string>('--');
   const [configText, setConfigText] = useState<string>('');
@@ -245,6 +249,30 @@ export default function SasaConnect() {
           </motion.div>
         )}
 
+        {activeTab === 'subs' && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <Subscriptions />
+          </motion.div>
+        )}
+
+        {activeTab === 'tester' && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <Tester />
+          </motion.div>
+        )}
+
+        {activeTab === 'diag' && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <Diagnostics />
+          </motion.div>
+        )}
+
+        {activeTab === 'history' && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <History />
+          </motion.div>
+        )}
+
         {activeTab === 'config' && (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
@@ -326,31 +354,60 @@ export default function SasaConnect() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-800 pb-safe">
-        <div className="max-w-md mx-auto flex items-center justify-around p-2">
+      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-800 pb-safe overflow-x-auto">
+        <div className="max-w-md mx-auto flex items-center justify-start p-2 gap-2 min-w-max">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`flex flex-col items-center gap-1 p-2 w-20 rounded-xl transition-colors ${activeTab === 'dashboard' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'dashboard' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
           >
-            <Power className="w-6 h-6" />
-            <span className="text-[10px] font-medium">داشبورد</span>
+            <Power className="w-5 h-5" />
+            <span className="text-[9px] font-medium">داشبورد</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('subs')}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'subs' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+          >
+            <Layers className="w-5 h-5" />
+            <span className="text-[9px] font-medium">اشتراک</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('tester')}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'tester' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+          >
+            <PlaySquare className="w-5 h-5" />
+            <span className="text-[9px] font-medium">تستر</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('diag')}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'diag' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+          >
+            <Stethoscope className="w-5 h-5" />
+            <span className="text-[9px] font-medium">عیب‌یابی</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'history' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+          >
+            <HistoryIcon className="w-5 h-5" />
+            <span className="text-[9px] font-medium">تاریخچه</span>
           </button>
           <button
             onClick={() => setActiveTab('config')}
-            className={`flex flex-col items-center gap-1 p-2 w-20 rounded-xl transition-colors ${activeTab === 'config' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'config' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
           >
-            <Settings className="w-6 h-6" />
-            <span className="text-[10px] font-medium">کانفیگ</span>
+            <Settings className="w-5 h-5" />
+            <span className="text-[9px] font-medium">کانفیگ</span>
           </button>
           <button
             onClick={() => setActiveTab('logs')}
-            className={`flex flex-col items-center gap-1 p-2 w-20 rounded-xl transition-colors ${activeTab === 'logs' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+            className={`flex flex-col items-center gap-1 p-2 w-16 rounded-xl transition-colors ${activeTab === 'logs' ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-300'}`}
           >
-            <Terminal className="w-6 h-6" />
-            <span className="text-[10px] font-medium">لاگ‌ها</span>
+            <Terminal className="w-5 h-5" />
+            <span className="text-[9px] font-medium">لاگ‌ها</span>
           </button>
         </div>
       </nav>
     </div>
   );
 }
+
